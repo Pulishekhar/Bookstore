@@ -1,0 +1,50 @@
+ [
+  {
+    "id": 1,
+    "name": "Comedy Book",
+    "title": "It's Funny thing by Michael Rowe.",
+    "price": 0,
+    "category": "free",
+    "image": "https://m.media-amazon.com/images/I/41lVXGYzyfL._SL500_.jpg"
+  },
+  {
+    "id": 2,
+    "name": "Fantasy novel Book",
+    "title": "The Lion, the Witch, and the Wardrobe by C.S. Lewis",
+    "price": 0,
+    "category": "free",
+    "image": "https://i.pinimg.com/originals/32/c6/7f/32c67f88ea37dc6fd00ce65de7d1613a.jpg"
+  },
+  {
+    "id": 3,
+    "name": "Literary Fiction Book",
+    "title": "Five Point Someone by Chetan Bhagat",
+    "price": 0,
+    "category": "free",
+    "image": "https://m.media-amazon.com/images/I/51DOmO39pJL.jpg"
+  },
+  {
+    "id": 4,
+    "name": "Sports Book",
+    "title": "Life is a Sport by Stephanie Rudnick",
+    "price": 0,
+    "category": "free",
+    "image": "https://th.bing.com/th/id/OIP.7hT0opyIQCbyNguV2gzjFQHaJD?w=838&h=1024&rs=1&pid=ImgDetMain"
+  },
+  {
+    "id": 5,
+    "name": "Mystery Book",
+    "title": "The Da Vinci Code by Dan Brown",
+    "price": 0,
+    "category": "free",
+    "image": "https://buddenbrooks.cdn.bibliopolis.com/pictures/31016_2.jpg?v=1626713307"
+  },
+  {
+    "id": 6,
+    "name": "Historical Fiction",
+    "title": "The Nightingale by Kristin Hannah",
+    "price": 0,
+    "category": "free",
+    "image": "https://images.thenile.io/r1000/9781509848621.jpg"
+  }
+]
