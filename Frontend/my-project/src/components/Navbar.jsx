@@ -1,9 +1,15 @@
 import React from 'react';
 import { GiBookshelf } from 'react-icons/gi';
 import { Link } from 'react-router-dom';
-import Login from './login'; // Import Login component
+import Login from './login';
+import Logout from './logout';
+import { useAuth } from "../context/AuthProvider"; // Make sure the path to AuthProvider is correct
 
 function Navbar() {
+  // Destructure authUser and setAuthUser from the object returned by useAuth
+  const { authUser } = useAuth();
+  console.log(authUser);
+
   const handleOpenModal = () => {
     document.getElementById('my_modal_3').showModal();
   };
@@ -33,21 +39,24 @@ function Navbar() {
           <li><Link to="/contact" className="rounded-lg p-2 text-white hover:bg-gray-700">Contact</Link></li>
           <li><Link to="/about" className="rounded-lg p-2 text-white hover:bg-gray-700">About</Link></li>
         </ul>
-
-        {/* Login Button */}
+        
+        {/* Conditional Rendering for Login/Logout */}
         <div className="flex-none gap-2">
-          <button
-            className="bg-blue-600 text-white hover:bg-blue-700 py-1 px-3 rounded-lg text-sm"
-            style={{ height: '30px' }}
-            onClick={handleOpenModal}
-          >
-            Login
-          </button>
+          {authUser ? (
+            <Logout />
+          ) : (
+            <div>
+              <a
+                className="bg-blue-400 text-white px-3 py-2 rounded-md hover:bg-blue-800 duration-300 cursor-pointer"
+                onClick={handleOpenModal}
+              >
+                Login
+              </a>
+              <Login />
+            </div>
+          )}
         </div>
       </div>
-
-      {/* Render the Login component */}
-      <Login />
     </div>
   );
 }

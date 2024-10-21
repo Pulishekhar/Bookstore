@@ -1,37 +1,68 @@
 import React from 'react';
-import { Link } from 'react-router-dom'; // Import Link from react-router-dom for navigation
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useForm } from "react-hook-form";
+import axios from "axios";
+import { toast } from "react-hot-toast";
 
 function Signup() {
+  const location = useLocation();
+  const navigate = useNavigate();
+  const from = location.state?.from || "/"; // Make sure to use the correct path here
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
 
-  const onSubmit = (data) => {
-    console.log(data); // Log the form data
+  const onSubmit = async (data) => {
+    const userInfo = {
+      fullname: data.fullname,
+      email: data.email,
+      password: data.password,
+    };
+
+    console.log("User Info to be sent:", userInfo);
+
+    await axios.post("http://localhost:4001/user/signup", userInfo)
+      .then((res) => {
+        console.log(res.data);
+        if (res.data) {
+          toast.success("Signup Successfully");
+          navigate(from, { replace: true }); // Use navigate here
+        }
+        localStorage.setItem("Users", JSON.stringify(res.data.user));
+      })
+      .catch((err) => {
+        if (err.response) {
+          console.error(err);
+          toast.error("Error: " + err.response.data.message);
+        }
+      });
   };
 
   return (
     <div className="flex h-screen items-center justify-center bg-gray-200">
-      <div className="bg-white p-6 rounded-lg shadow-md w-full max-w-sm">
+      <div className="bg-white p-6 rounded-lg shadow-md w-full max-w-sm relative">
+        <button
+          className="absolute right-2 top-2 text-gray-400 hover:text-gray-600"
+          onClick={() => window.history.back()}
+        >
+          ✕
+        </button>
+
         <h3 className="font-bold text-lg mb-4">Sign Up</h3>
         <form onSubmit={handleSubmit(onSubmit)} method="post">
           <div className="mb-4">
-            <label className="block mb-1" htmlFor="name">Name</label>
+            <label className="block mb-1" htmlFor="fullname">Name</label>
             <input
               type="text"
-              id="name"
               placeholder="Enter your fullname"
               className="input input-bordered w-full"
-              {...register("name", { required: true })}
+              {...register("fullname", { required: true })}
             />
             <br />
-            {errors.name && (
-              <span className="text-sm text-red-500">
-                This field is required
-              </span>
+            {errors.fullname && (
+              <span className="text-sm text-red-500">This field is required</span>
             )}
           </div>
 
@@ -46,9 +77,7 @@ function Signup() {
             />
             <br />
             {errors.email && (
-              <span className="text-sm text-red-500">
-                This field is required
-              </span>
+              <span className="text-sm text-red-500">This field is required</span>
             )}
           </div>
 
@@ -63,9 +92,7 @@ function Signup() {
             />
             <br />
             {errors.password && (
-              <span className="text-sm text-red-500">
-                This field is required
-              </span>
+              <span className="text-sm text-red-500">This field is required</span>
             )}
           </div>
 
@@ -75,7 +102,6 @@ function Signup() {
             </button>
             <p>
               Have an account?{' '}
-              {/* Use Link to navigate to the Login page */}
               <Link to="/login" className="cursor-pointer hover:text-blue-500">
                 Login
               </Link>
