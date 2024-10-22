@@ -12,23 +12,23 @@ app.use(express.json());
 dotenv.config();
 
 const PORT = process.env.PORT || 4000;
-const MongoDBURI = process.env.MongoDBURI;
+const MONGO_URI = process.env.MONGO_URI;
 
-// connect to mongoDB
+// Connect to MongoDB
 try {
-  mongoose.connect(MongoDBURI);
-  console.log("connected to mongoDB");
+  mongoose.connect(MONGO_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  });
+  console.log("Connected to MongoDB");
 } catch (error) {
-  console.log("Error : ", error);
+  console.log("Error: ", error);
 }
-app.use("/book",bookRoute)
-app.use("/user",userRoute);
 
-// // Root route
-// app.get('/', (req, res) => {
-//   res.send('Welcome to the Bookstore backend!');
-// });
+app.use("/book", bookRoute);
+app.use("/user", userRoute);
 
+// Start the server
 app.listen(PORT, () => {
   console.log(`Server is listening on port ${PORT}`);
 });
