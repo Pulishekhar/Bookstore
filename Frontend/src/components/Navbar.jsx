@@ -1,17 +1,30 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { GiBookshelf } from 'react-icons/gi';
 import { Link } from 'react-router-dom';
-import Login from './login';
-import Logout from './logout';
+import Login from './login'; // This should be your login component
+import Logout from './logout'; // This should be your logout component
 import { useAuth } from "../context/AuthProvider"; // Make sure the path to AuthProvider is correct
+import ContactModal from './ContactModal'; // Import the ContactModal
 
 function Navbar() {
-  // Destructure authUser and setAuthUser from the object returned by useAuth
   const { authUser } = useAuth();
-  console.log(authUser);
+  const [isContactModalOpen, setContactModalOpen] = useState(false);
+  const [isLoginModalOpen, setLoginModalOpen] = useState(false); // State for the login modal
 
-  const handleOpenModal = () => {
-    document.getElementById('my_modal_3').showModal();
+  const handleOpenContactModal = () => {
+    setContactModalOpen(true);
+  };
+
+  const handleCloseContactModal = () => {
+    setContactModalOpen(false);
+  };
+
+  const handleOpenLoginModal = () => {
+    setLoginModalOpen(true);
+  };
+
+  const handleCloseLoginModal = () => {
+    setLoginModalOpen(false);
   };
 
   return (
@@ -32,15 +45,17 @@ function Navbar() {
           </div>
         </div>
 
-        {/* Normal Menu for larger screens */}
         <ul className="hidden md:flex menu menu-horizontal bg-gray-800 rounded-lg">
           <li><Link to="/" className="rounded-lg p-2 text-white hover:bg-gray-700">Home</Link></li>
           <li><Link to="/course" className="rounded-lg p-2 text-white hover:bg-gray-700">Course</Link></li>
-          <li><Link to="/contact" className="rounded-lg p-2 text-white hover:bg-gray-700">Contact</Link></li>
+          <li>
+            <button onClick={handleOpenContactModal} className="rounded-lg p-2 text-white hover:bg-gray-700">
+              Contact
+            </button>
+          </li>
           <li><Link to="/about" className="rounded-lg p-2 text-white hover:bg-gray-700">About</Link></li>
         </ul>
         
-        {/* Conditional Rendering for Login/Logout */}
         <div className="flex-none gap-2">
           {authUser ? (
             <Logout />
@@ -48,15 +63,18 @@ function Navbar() {
             <div>
               <a
                 className="bg-blue-400 text-white px-3 py-2 rounded-md hover:bg-blue-800 duration-300 cursor-pointer"
-                onClick={handleOpenModal}
+                onClick={handleOpenLoginModal} // Open the login modal
               >
                 Login
               </a>
-              <Login />
+              <Login isOpen={isLoginModalOpen} onClose={handleCloseLoginModal} /> {/* Ensure your Login component handles this */}
             </div>
           )}
         </div>
       </div>
+
+      {/* Contact Modal */}
+      <ContactModal isOpen={isContactModalOpen} onClose={handleCloseContactModal} />
     </div>
   );
 }
