@@ -7,28 +7,31 @@ import bookRoute from "./route/book.route.js";
 import userRoute from "./route/user.route.js";
 
 const app = express();
-app.use(cors());
-app.use(express.json());
 dotenv.config();
+
+// Allow only your frontend URL
+const frontendURL = process.env.FRONTEND_URL || "http://localhost:3000";  // Add your frontend deployed link in .env
+app.use(cors({
+  origin: frontendURL,
+}));
+
+app.use(express.json());
 
 const PORT = process.env.PORT || 4000;
 const MongoDBURI = process.env.MongoDBURI;
 
-// connect to mongoDB
+// Connect to MongoDB
 try {
   mongoose.connect(MongoDBURI);
-  console.log("connected to mongoDB");
+  console.log("Connected to MongoDB");
 } catch (error) {
-  console.log("Error : ", error);
+  console.log("Error:", error);
 }
-app.use("/book",bookRoute)
-app.use("/user",userRoute);
 
-// // Root route
-// app.get('/', (req, res) => {
-//   res.send('Welcome to the Bookstore backend!');
-// });
+// Your routes
+app.use("/books", bookRoute);
+app.use("/users", userRoute);
 
 app.listen(PORT, () => {
-  console.log('Server is listening on port ${PORT}');
-}); 
+  console.log(`Server running on port ${PORT}`);
+});
